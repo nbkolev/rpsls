@@ -4,8 +4,23 @@ using static GameEngine.PlayerMove;
 
 namespace Rpsls.GameEngine.Tests;
 
-public class GameRulesTest
+public class GameTest
 {
+    
+    [Theory]
+    [InlineData(Scissors, Paper , Win)]
+    [InlineData(Paper, Scissors , Lose)]
+    [InlineData(Paper, Paper , Tie)]
+    void GameRoundTest(PlayerMove pl, PlayerMove o, GameResult expectedResult)
+    {
+        IPlayer player = new ExternalPlayer((int)pl);
+        IPlayer opponent = new ExternalPlayer((int)o);
+
+        var gameResult = Game.GameRound.PlaySingleGame(player, opponent).Result;
+        Assert.True(gameResult == expectedResult, 
+         $"PlaySingleGame result expected {expectedResult}, got {gameResult}.");
+    }
+    
     [Fact]
     void Is_Exshaustive_Game_Rules_Check_Passing()
     {
@@ -43,12 +58,13 @@ public class GameRulesTest
 
        //test each generated game in the engine
        foreach (var game in from game in allGames 
-                let result = GameRules.CheckOutcome(game.player, game.opponent) select game)
+                let result = Game.CheckOutcome(game.player, game.opponent) select game)
        {
-           Assert.True(GameRules.CheckOutcome(game.player,game.opponent) == game.result, 
+           Assert.True(Game.CheckOutcome(game.player,game.opponent) == game.result, 
                $"Game player:{game.player} opponent: {game.opponent}" +
                " the outcome: {result} was not expected, should be: {game.result}");
        }
        
     }
+
 }

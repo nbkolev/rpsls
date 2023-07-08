@@ -13,16 +13,17 @@ public class RandSourceExternal : IRandSource
 {
     private string? _locationUrl = null;
     private int _externalSourceUpperBound = 0;
-    private static HttpClient _client = new HttpClient();
+    private HttpClient _client = null;
 
-    public RandSourceExternal(string locationUrl, int externalSourceUpperBound)
+    public RandSourceExternal(string locationUrl, int externalSourceUpperBound, HttpClient httpClient)
     {
         if (externalSourceUpperBound <= 0)
         {
-            throw new InvalidConstraintException("a Random source with zero upper bound will return only zeros");
+            throw new InvalidConstraintException("A random source with zero upper bound will return only zeros.");
         }
         _externalSourceUpperBound = externalSourceUpperBound;
         _locationUrl = locationUrl;
+        _client = httpClient;
     }
 
     public async Task<int>  GetRandFromExternalSrc(string url)
@@ -36,7 +37,7 @@ public class RandSourceExternal : IRandSource
         }
         catch (FormatException e)
         {
-            throw  new ExternalException(
+            throw new InvalidDataException(
                 "External random source output not correctly formatted. Expected integer.");
         }
     }
@@ -48,7 +49,9 @@ public class RandSourceExternal : IRandSource
         
         var returnedInt = await GetRandFromExternalSrc(_locationUrl);
         if (returnedInt > _externalSourceUpperBound)
-            throw new ExternalException("External random source output out of bounds");
+            throw new ExternalException("External random source output out of bounds.");
+        if (returnedInt < 0)
+            throw new ExternalException("External random source output should be greater than zero.");
             
         var normalisedInt = returnedInt % upperBound; 
         return normalisedInt;
@@ -64,7 +67,7 @@ public class RandSourceExternal : IRandSource
 public class RandSourceMock : IRandSource
 {
     private int _desiredOutput = 0;
-    public RandSourceMock(int desiredOutput) => _desiredOutput = 0;
+    public RandSourceMock(int desiredOutput) => _desiredOutput = desiredOutput;
     public Task<int> GetRandomInt(int upperBound) => Task.FromResult(_desiredOutput);
 }
 

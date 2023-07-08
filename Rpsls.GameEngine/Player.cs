@@ -24,9 +24,9 @@ public interface IPlayer
 }
 
 
-class ExternalPlayerFactory
+public class ExternalPlayerFactory
 {
-    static IPlayer getFixedChoicePlayerFromRequestArg(string requestArg)
+    public static IPlayer getFixedChoicePlayerFromRequestArg(string requestArg)
     {
         int choiceId = -1; //invalid choice 
         try
@@ -49,7 +49,7 @@ class ExternalPlayerFactory
 /// it is an optional abstraction to simplify the overral code.
 /// This architecture supports also bot vs bot game or interactive mode.
 /// </summary>
-class ExternalPlayer : IPlayer
+public class ExternalPlayer : IPlayer
 {
     private bool _movesSpent = false;
     private PlayerMove _choiceId;
@@ -79,10 +79,10 @@ class ExternalPlayer : IPlayer
     
 }
 
-class AiPlayer : IPlayer
+public class BotPlayer : IPlayer
 {
     private IRandSource _choiceGenerator;
-    public AiPlayer(IRandSource choiceGenerator) => _choiceGenerator = choiceGenerator;
+    public BotPlayer(IRandSource choiceGenerator) => _choiceGenerator = choiceGenerator;
 
     public async Task<PlayerMove> GetMove()
     {

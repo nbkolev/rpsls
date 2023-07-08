@@ -20,7 +20,7 @@ public static class  GameResultExtensions
 }
 
 
-public class GameRules
+public class Game
 {
 
     /// <summary>
@@ -74,4 +74,16 @@ public class GameRules
         // Everything else is a tie
         return GameResult.Tie;
     }
+    
+    
+    public class GameRound
+    {
+        public static async Task<GameResult> PlaySingleGame(IPlayer player, IPlayer opponent)
+        {
+            var playerMove = await player.GetMove();
+            var opponentMove = await opponent.GetMove();
+            return CheckOutcome(playerMove, opponentMove);
+        }
+    }
+    
 }
