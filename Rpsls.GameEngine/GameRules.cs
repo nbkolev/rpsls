@@ -13,8 +13,8 @@ public enum GameResult
 
 public static class  GameResultExtensions
 {
-    public static string CanonicalName(this GameResult gameResult) 
-        => Enum.GetName(gameResult).ToLower() ?? throw new InvalidOperationException("Impossible condition detected.");
+    public static string CanonicalName(this GameResult gameResult)
+        => Enum.GetName(gameResult).ToLower() ?? throw new Exception();
 }
 
 
@@ -72,11 +72,4 @@ public class GameRules
         // Everything else is a tie
         return GameResult.Tie;
     }
-    
-
-}
-
-public class GameInstance
-{
-   
 }
