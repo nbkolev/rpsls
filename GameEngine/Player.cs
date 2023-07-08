@@ -13,7 +13,7 @@ public enum PlayerMove : int
 public static class PlayerMoveExtensions
 {
     public static string CanonicalName(this PlayerMove move) 
-        => Enum.GetName(move) ?? throw new InvalidOperationException("Impossible condition detected.");
+        => Enum.GetName(move).ToLower() ?? throw new InvalidOperationException("Impossible condition detected.");
 }
 
 
