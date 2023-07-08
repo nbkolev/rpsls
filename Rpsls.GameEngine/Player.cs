@@ -17,12 +17,10 @@ public static class PlayerMoveExtensions
     
 }
 
-
 public interface IPlayer
 {
     Task<PlayerMove> GetMove();
 }
-
 
 public class ExternalPlayerFactory
 {

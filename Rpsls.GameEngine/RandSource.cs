@@ -8,7 +8,6 @@ public interface IRandSource
     Task<int> GetRandomInt(int upperBound);
 }
 
-
 public class RandSourceExternal : IRandSource
 {
     private string? _locationUrl = null;
@@ -59,7 +58,6 @@ public class RandSourceExternal : IRandSource
     
 }
 
-
 /// <summary>
 /// Class <c>RandSourceMock</c> is dummy generator
 /// returning constant number every time. Useful for testing purposes.
@@ -80,4 +78,3 @@ public class RandSourceInternal : IRandSource
     public Task<int> GetRandomInt(int upperBound) => Task.FromResult(_seed.Next(0, upperBound));
     
 }
-

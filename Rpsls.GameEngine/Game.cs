@@ -10,16 +10,11 @@ public enum GameResult
     Lose,
     Tie
 }
-
-
-
 public static class  GameResultExtensions
 {
     public static string CanonicalName(this GameResult gameResult)
         => Enum.GetName(gameResult).ToLower() ?? throw new Exception();
 }
-
-
 public class Game
 {
 
