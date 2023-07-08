@@ -70,7 +70,7 @@ class ExternalPlayer : IPlayer
     public Task<PlayerMove> GetMove()
     {
         if (_movesSpent)
-            throw new NotImplementedException(
+            throw new NotSupportedException(
                 "The current implementation of external player supports only one stated move per request.");
         _movesSpent = true;
         
