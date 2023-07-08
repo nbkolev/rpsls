@@ -11,6 +11,8 @@ public enum GameResult
     Tie
 }
 
+
+
 public static class  GameResultExtensions
 {
     public static string CanonicalName(this GameResult gameResult)
