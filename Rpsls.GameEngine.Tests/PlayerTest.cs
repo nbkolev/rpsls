@@ -20,8 +20,6 @@ public class PlayerTest
             Assert.True(ip.GetMove().Result == (PlayerMove)i, 
                 "Player move does not correspond to choice id provided.");
         }
-        
-        
     }
     
     [Fact]
@@ -31,7 +29,7 @@ public class PlayerTest
         for (int i = 0; i < Enum.GetValues<PlayerMove>().Length; i++)
         {
             IRandSource mockSource = new RandSourceMock(i);
-            IPlayer ip = new BotPlayer(mockSource);
+            IPlayer ip = new BotPlayer(new RandomMoveGenerator(mockSource));
             Assert.True(ip.GetMove().Result == (PlayerMove)i, 
                 "Player move does not correspond to random choice generated.");
         }

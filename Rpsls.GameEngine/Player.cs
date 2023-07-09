@@ -1,5 +1,30 @@
+using System.Runtime.InteropServices.JavaScript;
+
 namespace GameEngine;
 
+
+#region Interfaces
+
+/// <summary>
+/// <c> IMoveGenerator</c> abstracts move generation from decision source
+/// </summary>
+public interface IMoveGenerator
+{
+    public Task<PlayerMove> GetRandomMove();
+}
+/// <summary>
+/// <c> IPlayer</c> Abstracts external and bot players
+/// </summary>
+public interface IPlayer
+{
+    Task<PlayerMove> GetMove();
+}
+
+public interface ICompetitor : IPlayer { };
+
+#endregion
+
+#region Implementation
 
 public enum PlayerMove : int
 {
@@ -10,6 +35,7 @@ public enum PlayerMove : int
     Spock = 4
 };
 
+
 public static class PlayerMoveExtensions
 {
     public static string CanonicalName(this PlayerMove move) 
@@ -17,13 +43,11 @@ public static class PlayerMoveExtensions
     
 }
 
-public interface IPlayer
-{
-    Task<PlayerMove> GetMove();
-}
-
 public class ExternalPlayerFactory
 {
+    /// <summary>
+    /// <c>getFixedChoicePlayerFromRequestArg</c> Converts raw string input to player object with specified choice
+    /// </summary>
     public static IPlayer getFixedChoicePlayerFromRequestArg(string requestArg)
     {
         int choiceId = -1; //invalid choice 
@@ -76,16 +100,59 @@ public class ExternalPlayer : IPlayer
     }
     
 }
-
-public class BotPlayer : IPlayer
+/// <summary>
+/// Class <c>RandomMoveGenerator </c> is used to generate moves for players that are based on random choice
+/// </summary>
+public class RandomMoveGenerator : IMoveGenerator
 {
     private IRandSource _choiceGenerator;
-    public BotPlayer(IRandSource choiceGenerator) => _choiceGenerator = choiceGenerator;
+    public RandomMoveGenerator(IRandSource choiceGenerator) => _choiceGenerator = choiceGenerator;
 
-    public async Task<PlayerMove> GetMove()
+    public async Task<PlayerMove> GetRandomMove()
     {
         var limitOfPossibleChoices = Enum.GetValues<PlayerMove>().Length;
         return (PlayerMove)await _choiceGenerator.GetRandomInt(limitOfPossibleChoices);
     }
+}
+/// <summary>
+/// Class <c>BotPlayer </c> is and AI player implementation.
+/// </summary>
+public class BotPlayer : ICompetitor
+{
+    private IMoveGenerator _moveGenerator;
+    public BotPlayer(IMoveGenerator moveGenerator) => _moveGenerator = moveGenerator;
+
+    public  Task<PlayerMove> GetMove()
+    {
+        return _moveGenerator.GetRandomMove();
+    }
 
 }
+/// <summary>
+/// Used to present possible game moves as "choices list" for the external API
+/// </summary>
+public class PossibleMovePresentation
+{
+    public int id {get;}
+    public string name{get;}
+
+    public PossibleMovePresentation(int id, string name)
+    {
+        this.id = id;
+        this.name = name;
+    }
+
+    public static IEnumerable<PossibleMovePresentation> GetAvalableMoves()
+    {
+        return Enum.GetValues<PlayerMove>().Select(
+            x => new PossibleMovePresentation((int)x, x.CanonicalName()));;
+    }
+
+    public static PossibleMovePresentation FromMove(PlayerMove pm)
+    {
+        return new PossibleMovePresentation((int)pm, pm.CanonicalName());
+    }
+}
+
+
+#endregion

@@ -4,6 +4,19 @@ using static GameEngine.PlayerMove;
 
 namespace GameEngine;
 
+public class GameResultSummary
+{
+    public GameResultSummary(GameResult results, PlayerMove player, PlayerMove opponent)
+    {
+        this.results = results.CanonicalName();
+        this.player = (int)player;
+        bot = (int)opponent;
+    }
+    public string results { get; }
+    public int player { get; }
+    public int bot { get; }
+}
+
 public enum GameResult
 {
     Win,
@@ -59,7 +72,6 @@ public class Game
         return false;
     }
     
-    
     public static GameResult CheckOutcome(PlayerMove player, PlayerMove opponent)
     {
         //Check according to known winning moves
@@ -69,15 +81,17 @@ public class Game
         // Everything else is a tie
         return GameResult.Tie;
     }
+
+  
     
-    
-    public class GameRound
+    public class Round
     {
-        public static async Task<GameResult> PlaySingleGame(IPlayer player, IPlayer opponent)
+        public static async Task<GameResultSummary> PlaySingleGame(IPlayer player, IPlayer opponent)
         {
             var playerMove = await player.GetMove();
             var opponentMove = await opponent.GetMove();
-            return CheckOutcome(playerMove, opponentMove);
+            var outcome = CheckOutcome(playerMove, opponentMove);
+            return new GameResultSummary(outcome, playerMove, opponentMove);
         }
     }
     

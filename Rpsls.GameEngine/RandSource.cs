@@ -20,6 +20,12 @@ public class RandSourceExternal : IRandSource
         {
             throw new InvalidConstraintException("A random source with zero upper bound will return only zeros.");
         }
+        var limitOfPossibleChoices = Enum.GetValues<PlayerMove>().Length;
+        if (externalSourceUpperBound <= limitOfPossibleChoices)
+        {
+            throw new InvalidConstraintException(
+                $"This generator is unsuitable for this game. Expected generator with upper bound of at least {limitOfPossibleChoices}");
+        }
         _externalSourceUpperBound = externalSourceUpperBound;
         _locationUrl = locationUrl;
         _client = httpClient;
