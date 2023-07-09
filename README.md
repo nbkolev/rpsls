@@ -31,13 +31,13 @@ and "round outcome". In order to minimize confusion.
   and the `Rpsls.Apiendpoint` is following the requirements. 
 
 #### 2. Possible use case generalisation to ease implementation of new features
-  The game specification states: _The game adds the lizard and Spock so **there are fewer ties** when you play._
-   _Try out the game the next time you need to **settle a simple conflict** or just want something easy to **play with a partner**!_
-  * The required API interface is explicit that there is one move per game. But the possibility for a tie in a single round is significant 
-  and this is a conflict with the objective to reduce ties. That is why the interface `IMoveGenerator` was introduced 
-  * and the result of the game is processed by `PlaySingleGame`. In future a `PlayMultipleGames` could be implemented by recursively calling `PlaySingleGame`. The `IPlayer` interface is designed that will allow multiple move choices.
-  * Initial requirements were to be able to play against bot.
-  Nevertheless it is possible to play agains other players that is why 
+  The game specification Paragraph I states: _The game adds the lizard and Spock so **there are fewer ties**(#1) when you play._
+   _Try out the game the next time you need to **settle a simple conflict**(#2) or just want something easy to **play with a partner**(#3)!_
+  * The required API interface is explicit that there is one move per game. But the possibility for a tie (see #1) in a single round is significant 
+  and this is a conflict with objective to reduce ties (see #2 and #3). 
+  * That is why the interface `IMoveGenerator` was introduced and the result of the game is calculated by `PlaySingleGame`. 
+  * In future a `PlayMultipleGames` could be implemented by recursively calling `PlaySingleGame`. The `IPlayer` interface is designed that will allow multiple move choices.
+  * Although initial requirements were to be able to play against bot. In future it is reasonable to assume the requirement to play against other players. In this train of thought
   `IPlayer` interface is implemented as `ExternalPlayer` and `BotPlayer`.
   
 
