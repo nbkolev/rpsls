@@ -1,0 +1,6 @@
+﻿services:
+  rpsls.apiendpoint:
+    image: rpsls.apiendpoint
+    build:
+      context: .
+      dockerfile: Rpsls.ApiEndpoint/Dockerfile
