@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using GameEngine;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Rpsls.ApiEndpoint.Controllers;
 
 internal class Program
 {
+    [ExcludeFromCodeCoverage]
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);

@@ -1,9 +1,11 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Rpsls.ApiEndpoint;
 
+[ExcludeFromCodeCoverage]
 public class ApiExceptionFilter : IExceptionFilter
 {
     private readonly IHostEnvironment _hostEnvironment;

@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using static GameEngine.PlayerMove;
 
@@ -13,7 +14,9 @@ public class GameResultSummary
         bot = (int)opponent;
     }
     public string results { get; }
+    [ExcludeFromCodeCoverage] 
     public int player { get; }
+    [ExcludeFromCodeCoverage] 
     public int bot { get; }
 }
 
@@ -81,8 +84,6 @@ public class Game
         // Everything else is a tie
         return GameResult.Tie;
     }
-
-  
     
     public class Round
     {

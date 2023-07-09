@@ -24,7 +24,8 @@ public class RandSourceExternal : IRandSource
     {
         if (externalSourceUpperBound <= 0)
         {
-            throw new InvalidConstraintException("A random source with zero upper bound will return only zeros.");
+            throw new InvalidConstraintException(
+                "A random source with zero upper bound will return only zeros.");
         }
         var limitOfPossibleChoices = Enum.GetValues<PlayerMove>().Length;
         if (externalSourceUpperBound <= limitOfPossibleChoices)
@@ -41,12 +42,6 @@ public class RandSourceExternal : IRandSource
     {
         HttpResponseMessage response = await _client.GetAsync(url);
         ExternalRandSourceData? output = await response.Content.ReadFromJsonAsync<ExternalRandSourceData>();
-        
-        if (output == null){
-            throw new InvalidDataException(
-                "Returned data incorrect. Expected: {\"random\": <integer>}");
-        }
-
         return output.random;
     }
 
@@ -57,9 +52,9 @@ public class RandSourceExternal : IRandSource
         
         var returnedInt = await GetRandFromExternalSrc(_locationUrl);
         if (returnedInt > _externalSourceUpperBound)
-            throw new ExternalException("External random source output out of bounds.");
+            throw new ConstraintException("External random source output out of bounds.");
         if (returnedInt < 0)
-            throw new ExternalException("External random source output should be greater than zero.");
+            throw new ConstraintException("External random source output should be greater than zero.");
             
         var normalisedInt = returnedInt % upperBound; 
         return normalisedInt;

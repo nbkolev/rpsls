@@ -46,21 +46,10 @@ public static class PlayerMoveExtensions
 public class ExternalPlayerFactory
 {
     /// <summary>
-    /// <c>getFixedChoicePlayerFromRequestArg</c> Converts raw string input to player object with specified choice
+    /// <c>getFixedChoicePlayerFromRequestArg</c> Converts choiceID input to player object with specified choice
     /// </summary>
-    public static IPlayer getFixedChoicePlayerFromRequestArg(string requestArg)
+    public static IPlayer getFixedChoicePlayer(int choiceId)
     {
-        int choiceId = -1; //invalid choice 
-        try
-        {
-            choiceId = int.Parse(requestArg);
-        }
-        catch (FormatException)
-        {
-            throw new ArgumentException(
-                $"choice ID is not valid number in range 0 to {Enum.GetValues<PlayerMove>().Length}");
-        }
-
         return new ExternalPlayer(choiceId);
     }
 }

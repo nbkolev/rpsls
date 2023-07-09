@@ -11,7 +11,7 @@ public class GameTest
     [InlineData(Scissors, Paper , Win)]
     [InlineData(Paper, Scissors , Lose)]
     [InlineData(Paper, Paper , Tie)]
-    void GameRoundTest(PlayerMove pl, PlayerMove o, GameResult expectedResult)
+    public void GameRoundTest(PlayerMove pl, PlayerMove o, GameResult expectedResult)
     {
         IPlayer player = new ExternalPlayer((int)pl);
         IPlayer opponent = new ExternalPlayer((int)o);
@@ -22,7 +22,7 @@ public class GameTest
     }
     
     [Fact]
-    void Is_Exshaustive_Game_Rules_Check_Passing()
+    public void Is_Exshaustive_Game_Rules_Check_Passing()
     {
         //player, oppnent, outcome
        var positiveGames =  new(PlayerMove player, PlayerMove opponent, GameResult result) [] 

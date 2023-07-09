@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using GameEngine;
 using Microsoft.AspNetCore.Mvc;
@@ -46,7 +47,7 @@ public class GameControlerOptions
 
 
 // Arguments abstractions
-
+[ExcludeFromCodeCoverage]
 public class ExternalPlayerChoice
 {
     public int player { get; set; }//used for JSON input parsing
@@ -60,8 +61,10 @@ public class ExternalPlayerChoice
 [TypeFilter(typeof(ApiExceptionFilter))]
 public class GameController : ControllerBase
 {
-    private IMoveGenerator _moveGenerator;
-    private IPlayer _botPlayer;
+    public IMoveGenerator MoveGenerator { get; }
+    public IPlayer BotPlayer { get; }
+    
+    
     
     private readonly GameControlerOptions _options;
 
@@ -74,29 +77,30 @@ public class GameController : ControllerBase
         {
             
             var randSourceInternal = new RandSourceInternal();
-            _moveGenerator = new RandomMoveGenerator(randSourceInternal);
+            MoveGenerator = new RandomMoveGenerator(randSourceInternal);
         }
         else
         {
             var randSourceExternal = new RandSourceExternal(_options.ExternalRandomSourceUrl,
                 _options.ExternalRandomSourceRangeUpperBound,
                 clientFactory.CreateClient());
-            _moveGenerator = new RandomMoveGenerator(randSourceExternal);
+            MoveGenerator = new RandomMoveGenerator(randSourceExternal);
         }
         if (_options.Debug_MockBotPlayer)
         {
             var randSourceMock = new RandSourceMock((int)_options.Debug_MockBotPlayerChoice);
             var mockMoveGenerator = new RandomMoveGenerator(randSourceMock);
-            _botPlayer = new BotPlayer(mockMoveGenerator);
+            BotPlayer = new BotPlayer(mockMoveGenerator);
         }
         else
         {
-            _botPlayer = new BotPlayer(_moveGenerator);
+            BotPlayer = new BotPlayer(MoveGenerator);
         }
     }
     
     [HttpGet]
     [Route("choices")]
+    [ExcludeFromCodeCoverage]
     public IActionResult Choices()
     {
         var choices = GameEngine.PossibleMovePresentation.GetAvalableMoves();
@@ -105,22 +109,22 @@ public class GameController : ControllerBase
     
     [HttpGet]
     [Route("choice")]
+    [ExcludeFromCodeCoverage]
     public async Task<IActionResult> Choice()
     {
-        
-        var randomMove = await _moveGenerator.GetRandomMove();
+        var randomMove = await MoveGenerator.GetRandomMove();
         var randomChoice = PossibleMovePresentation.FromMove(randomMove);
         return new JsonResult(randomChoice);
     }
     
     [HttpPut]
     [Route("play")]
+    [ExcludeFromCodeCoverage]
     public async Task<IActionResult> Play([FromBody] ExternalPlayerChoice choice)
     {
         var playerChoiceId = choice.player;
-        var externalPlayer = new ExternalPlayer(playerChoiceId);
-        var outcome = await Game.Round.PlaySingleGame(externalPlayer, _botPlayer);
-        
+        var externalPlayer = ExternalPlayerFactory.getFixedChoicePlayer(playerChoiceId);
+        var outcome = await Game.Round.PlaySingleGame(externalPlayer, BotPlayer);
         return new JsonResult(outcome);
     }
     
