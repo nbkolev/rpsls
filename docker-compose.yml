@@ -4,3 +4,6 @@
     build:
       context: .
       dockerfile: Rpsls.ApiEndpoint/Dockerfile
+    ports:
+    - "80:80"
+    - "443:443"
