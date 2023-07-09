@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rpsls.GameEngine", "Rpsls.GameEngine\Rpsls.GameEngine.csproj", "{ED5E563C-BA15-44CC-81DC-D3EF67F649FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rpsls.Tests", "Rpsls.Tests\Rpsls.Tests.csproj", "{A190AE3D-438D-4790-BC95-3FE4FD480EC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rpsls.ApiEndpoint", "Rpsls.ApiEndpoint\Rpsls.ApiEndpoint.csproj", "{3132353E-F672-4260-8ED7-521697B1FF31}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ED5E563C-BA15-44CC-81DC-D3EF67F649FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED5E563C-BA15-44CC-81DC-D3EF67F649FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED5E563C-BA15-44CC-81DC-D3EF67F649FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED5E563C-BA15-44CC-81DC-D3EF67F649FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A190AE3D-438D-4790-BC95-3FE4FD480EC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A190AE3D-438D-4790-BC95-3FE4FD480EC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A190AE3D-438D-4790-BC95-3FE4FD480EC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A190AE3D-438D-4790-BC95-3FE4FD480EC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3132353E-F672-4260-8ED7-521697B1FF31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3132353E-F672-4260-8ED7-521697B1FF31}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3132353E-F672-4260-8ED7-521697B1FF31}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3132353E-F672-4260-8ED7-521697B1FF31}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
