@@ -1,4 +1,5 @@
 using System.Data;
+using System.Net.Http.Json;
 using System.Runtime.InteropServices;
 
 namespace GameEngine;
@@ -8,11 +9,16 @@ public interface IRandSource
     Task<int> GetRandomInt(int upperBound);
 }
 
+public class ExternalRandSourceData
+{
+    //used for JSON parsing in RandSourceExternal
+    public int random { get; set; } 
+}
 public class RandSourceExternal : IRandSource
 {
     private string? _locationUrl = null;
     private int _externalSourceUpperBound = 0;
-    private HttpClient _client = null;
+    private HttpClient _client = null!;
 
     public RandSourceExternal(string locationUrl, int externalSourceUpperBound, HttpClient httpClient)
     {
@@ -34,17 +40,14 @@ public class RandSourceExternal : IRandSource
     public async Task<int>  GetRandFromExternalSrc(string url)
     {
         HttpResponseMessage response = await _client.GetAsync(url);
-        string output = await response.Content.ReadAsStringAsync();
-
-        try
-        {
-            return int.Parse(output);
-        }
-        catch (FormatException e)
-        {
+        ExternalRandSourceData? output = await response.Content.ReadFromJsonAsync<ExternalRandSourceData>();
+        
+        if (output == null){
             throw new InvalidDataException(
-                "External random source output not correctly formatted. Expected integer.");
+                "Returned data incorrect. Expected: {\"random\": <integer>}");
         }
+
+        return output.random;
     }
 
     public async Task<int> GetRandomInt(int upperBound)

@@ -26,7 +26,7 @@ public enum GameResult
 public static class  GameResultExtensions
 {
     public static string CanonicalName(this GameResult gameResult)
-        => Enum.GetName(gameResult).ToLower() ?? throw new Exception();
+        => Enum.GetName(gameResult)?.ToLower() ?? throw new Exception();
 }
 public class Game
 {

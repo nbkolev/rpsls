@@ -16,8 +16,8 @@ public class GameTest
         IPlayer player = new ExternalPlayer((int)pl);
         IPlayer opponent = new ExternalPlayer((int)o);
 
-        var gameResult = Game.GameRound.PlaySingleGame(player, opponent).Result;
-        Assert.True(gameResult == expectedResult, 
+        var gameResult = Game.Round.PlaySingleGame(player, opponent).Result;
+        Assert.True(gameResult.results == expectedResult.CanonicalName(), 
          $"PlaySingleGame result expected {expectedResult}, got {gameResult}.");
     }
     

@@ -39,7 +39,7 @@ public enum PlayerMove : int
 public static class PlayerMoveExtensions
 {
     public static string CanonicalName(this PlayerMove move) 
-        => Enum.GetName(move).ToLower() ?? throw new InvalidOperationException("Impossible condition detected.");
+        => Enum.GetName(move)?.ToLower() ?? throw new InvalidOperationException("Impossible condition detected.");
     
 }
 
@@ -55,15 +55,16 @@ public class ExternalPlayerFactory
         {
             choiceId = int.Parse(requestArg);
         }
-        catch (FormatException e)
+        catch (FormatException)
         {
-            throw  new ArgumentException(
+            throw new ArgumentException(
                 $"choice ID is not valid number in range 0 to {Enum.GetValues<PlayerMove>().Length}");
         }
 
         return new ExternalPlayer(choiceId);
     }
 }
+
 
 
 /// <summary>
@@ -75,6 +76,8 @@ public class ExternalPlayer : IPlayer
 {
     private bool _movesSpent = false;
     private PlayerMove _choiceId;
+    
+    
     
     public ExternalPlayer(int choiceId)
     {

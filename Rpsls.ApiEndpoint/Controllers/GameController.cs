@@ -40,12 +40,24 @@ public class GameControlerOptions
     /// <c>Debug_MockBotPlayer</c> is constant choice that mock player will perform.
     /// <c>Debug_MockBotPlayer</c> have to be set to TRUE.
     /// </summary>
-    public PlayerMove Debug_MockBotPlayerChoice { get; set; } = PlayerMove.Lizard;
+    public int Debug_MockBotPlayerChoice { get; set; } = (int)PlayerMove.Lizard;
         
 }
 
+
+// Arguments abstractions
+
+public class ExternalPlayerChoice
+{
+    public int player { get; set; }//used for JSON input parsing
+}
+
+
+
+
 [ApiController]
-[Route("[controller]")]
+[Route("/")]
+[TypeFilter(typeof(ApiExceptionFilter))]
 public class GameController : ControllerBase
 {
     private IMoveGenerator _moveGenerator;
@@ -83,6 +95,7 @@ public class GameController : ControllerBase
         }
     }
     
+    [HttpGet]
     [Route("choices")]
     public IActionResult Choices()
     {
@@ -90,6 +103,7 @@ public class GameController : ControllerBase
         return new JsonResult(choices);
     }
     
+    [HttpGet]
     [Route("choice")]
     public async Task<IActionResult> Choice()
     {
@@ -99,14 +113,15 @@ public class GameController : ControllerBase
         return new JsonResult(randomChoice);
     }
     
+    [HttpPut]
     [Route("play")]
-    public IActionResult Play([FromBody] int player)
+    public async Task<IActionResult> Play([FromBody] ExternalPlayerChoice choice)
     {
-        var choiceId = player;
-        var externalPlayer = new ExternalPlayer(choiceId);
-        var outcome = Game.Round.PlaySingleGame(externalPlayer, _botPlayer);
+        var playerChoiceId = choice.player;
+        var externalPlayer = new ExternalPlayer(playerChoiceId);
+        var outcome = await Game.Round.PlaySingleGame(externalPlayer, _botPlayer);
         
-        return new JsonResult(player);
+        return new JsonResult(outcome);
     }
     
 }

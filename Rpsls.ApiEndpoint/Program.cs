@@ -7,7 +7,19 @@ internal class Program
     public static void Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
+        
+        builder.Services.AddHttpClient();
+        builder.Services.Configure<GameControlerOptions>(
+            builder.Configuration.GetSection(GameControlerOptions.ConfigSectionName));
+        
+        
+        builder.Services.AddControllers().AddJsonOptions(options =>
+        {
+            options.JsonSerializerOptions.WriteIndented = true;
+            
 
+        });
+        
         builder.Services.AddControllers();
         
         if (builder.Environment.IsDevelopment())
@@ -15,17 +27,18 @@ internal class Program
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
         }
-
-        builder.Services.AddHttpClient();
-        builder.Services.Configure<GameControlerOptions>(
-            builder.Configuration.GetSection(GameControlerOptions.ConfigSectionName));
-
+       
+        
         var app = builder.Build();
         
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
+        } 
+        else
+        {
+            app.UseExceptionHandler("/Error");
         }
 
         app.UseHttpsRedirection();
