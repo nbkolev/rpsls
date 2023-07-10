@@ -43,7 +43,8 @@ internal class Program
             app.UseExceptionHandler("/Error");
         }
 
-        app.UseHttpsRedirection();
+        //In production it should run behind reverse proxy, so no
+        //app.UseHttpsRedirection(); is necessary.
         
         //At the moment no app.UseAuthorization(); is necessary.
 
