@@ -54,3 +54,5 @@ and "round outcome". In order to minimize confusion.
 ### Docker information
   * docker version 24.0.4, build 3713ee1
   * docker-compose version 1.29.2, build 5becea4c
+### Build & run command
+`git clone https://github.com/nbkolev/rpsls.git && cd rpsls && docker-compose build && docker compose up`
